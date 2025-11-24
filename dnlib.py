@@ -19,17 +19,21 @@ def setWrapWidth(newWidth : int):
     
     Basically, this sets how long is the line from bigLine() and how long a text can be like in the menus description and titles."""
     _setWrapWidth(newWidth)
-def codeErrorMessage(code : str):
-    """Pre-Made Coded Error Messages
-
-    Insert the code as string.
-
-    Code List:
-
-    - 001: Invalid Option
+def errorMessage(text : str, returnTo):
+    """Customizable error messages.
     
-    """
-    _codeErrorMessage(code)
+    text (str): The error message text
+    returnTo (lambda): What functions it will return to when enter is pressed.
+    
+    Example error message:
+    
+    errorMessage('This is an example error', lambda: main())
+    
+    Returns:
+    
+    ⚠️ An Error Has Occurred: This is an example error
+    Press Enter to Continue..."""
+    _errorMessage(text, returnTo)
 def printWrap(text : str, centered = False):
     """Prints the text wrapped.
     
@@ -53,14 +57,11 @@ def _setWrapWidth(newWidth : int):
     global wrapWidth
     wrapWidth = newWidth
     tw.width = wrapWidth
-def _codeErrorMessage(code : str):
+def _errorMessage(text : str, returnTo):
     #Notice: Add new codes into the public codeErrorMessage() function description.
-    txt = f"⚠️ Error Code ({code}): "
-    def add(msg): txt = txt + msg
-    match code:
-        case "001": add("Invalid Option. Try Again.")
-        case "002": pass
-    print(txt)
+    print(f"⚠️ An Error Has Occurred: {text}")
+    input("Press enter to continue...")
+    returnTo()
 def _printWrap(text : str, centered = False):
     if centered: 
         wrappedText = tw.wrap(text)
@@ -150,8 +151,5 @@ class newMenu:
             if str(option.index) == index:
                 option.action()
                 return
-        codeErrorMessage("001")
-        self.select(index)
+        errorMessage("Please, insert an valid answer.", lambda : self.select(index))
     #endregion
-
-
